@@ -1,0 +1,90 @@
+<!-- Clases y estilos -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.active{
+			color: blue;
+		}
+		.center{
+			text-align: center;
+		}
+		.text-danger{
+			color: red;
+		}
+
+		.font-size{
+			font-size: 20px;
+		}
+	</style>
+</head>
+<body>
+	<div id="app1">
+		<p v-bind:class="{ active:isActive }">Lorem ipsum dolor sit amet.</p>
+	</div>
+	<div id="app2">
+		<div class="center" v-bind:class="{ active:isActive, 'text-danger': hasError }">
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
+		</div>
+	</div>
+	<div id="app3">
+		<div v-bind:class="classObject">
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
+		</div>
+	</div>
+	<div id="app4">
+		<div v-bind:class="[activeClass,fontSizeClass]">
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
+		</div>
+	</div>
+	<div id="app5">
+		<div v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }">
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
+		</div>
+	</div>
+<script src="https://unpkg.com/vue"></script>
+<script>
+	var app1 = new Vue({
+		el: '#app1',
+		data: {
+			isActive: true
+		}
+	});
+	var app2 = new Vue({
+		el: '#app2',
+		data: {
+		  isActive: true,
+		  hasError: false
+		}
+	});
+	var app3 = new Vue({
+		el: '#app3',
+		data: {
+		  classObject: {
+		  	'text-danger': true,
+    		'center': false
+		  }
+		}
+	});
+	var app4 = new Vue({
+		el: '#app4',
+		data: {
+		  	activeClass: 'active',
+			fontSizeClass: 'font-size'
+		}
+	});
+	var app5 = new Vue({
+		el: '#app5',
+		data: {
+			activeColor: 'green',
+			fontSize: '40'
+		}
+	});
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,110 @@
+ <!-- Conditional v-if -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+
+	<div id="app">
+		<h1 v-if="ok">Existe OK</h1>
+		<h1 v-else>No existe Ok</h1>
+	</div>
+<hr>
+	<div id="app2">
+		<!-- La etiqueta template sirve para especificar un bloque referente al if -->
+		<template v-if="section">
+			<h1>titulo</h1>
+			<p>Parrafo 1</p>
+			<p>Parrafo 2</p>
+		</template>
+		<!-- Se puede pasar directo algfuna funcionalidad -->
+		<h2 v-if="Math.random() > 0.5">Me ves por que soy mayor a 0.5</h2>
+		<h2 v-else>NOOO me ves por que soy menor a 0.5</h2>
+	</div>
+	<hr>
+
+	<div id="app3">
+		<div v-if="type === 'A'">
+		  Es la letra A
+		</div>
+		<div v-else-if="type === 'B'">
+		  Es la letra B
+		</div>
+		<div v-else-if="type === 'C'">
+		  Es la letra C
+		</div>
+		<div v-else>
+		  No es  A/B/C
+		</div>
+	</div>
+	<hr>
+
+	<div id="app4">
+		<template v-if="loginType === 'username'">
+		  <label>Username</label>
+		  <input placeholder="Enter your username" key="username-input">
+		</template>
+		<template v-else>
+		  <label>Email</label>
+		  <input placeholder="Enter your email address" key="email-input">
+		</template>
+		<br>
+	  	<button v-on:click="showInput">Show input</button>
+	  	<br><br>
+
+	  	<!-- Cambia de tipo text a password, pero se borra contenidp <3 -->
+		<input v-bind:type="typeInput" placeholder="Introduce tu contraseña">
+		<br>
+		<button v-on:click="showPass">Show input</button>
+	</div>
+	<hr>
+
+	<script src="https://unpkg.com/vue"></script>
+	<script>
+		var app = new Vue({
+			el: '#app',
+			data: {
+				ok: true
+			}
+		});
+		var app2 = new Vue({
+			el: '#app2',
+			data: {
+				section: true
+			}
+		});
+		var app3 = new Vue({
+			el: '#app3',
+			data: {
+				type: "C"
+			}
+		});
+		var app4 = new Vue({
+			el: '#app4',
+			data: {
+				loginType: 'username',
+				typeInput: 'text'
+			},
+			methods: {
+			    showInput: function () {
+				  if (this.loginType == 'email') {
+				  	this.loginType = 'username';
+				  }else{
+				  	this.loginType = 'email';
+				  }
+			      
+			    },
+			    showPass: function(){
+			    	if (this.typeInput == 'text') {
+				  		this.typeInput = 'password';
+					}else{
+					  	this.typeInput = 'text';
+					}
+			    }
+			}
+		});
+	</script>
+</body>
+</html>

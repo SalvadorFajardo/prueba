@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div id="app">
+	  <h1>{{ message }}</h1>
+	</div>
+	<div id="app-2">
+	  <span v-bind:title="message">
+	    Pasa el raton por este texto...
+	  </span>
+	</div>
+
+	<div id="app-3">
+	  <p v-if="seen">Texto mostrado</p>
+	</div>
+
+	<div id="app-4">
+	  <ol>
+	    <li v-for="todo in todos">
+	      {{ todo.text }}
+	    </li>
+	  </ol>
+	</div>
+
+	<div id="app-5">
+	  <p>{{ message }}</p>
+	  <button v-on:click="reverseMessage">Reverse Message</button>
+	</div>
+
+	<div id="app-6">
+	  <p>Este msj aparecera en value: {{ message }}</p>
+	  <input v-model="message">
+	</div>
+	
+	<div id="app-7">
+	  <ol>
+	    <!-- Ahora proporcionamos cada item todo con el objeto todo -->
+	    <!-- Está representando, para que su contenido pueda ser dinámico -->
+	    <todo-item v-for="item in groceryList" v-bind:todo="item"></todo-item>
+	  </ol>
+	</div>
+
+	<script src="https://unpkg.com/vue"></script>
+	<script>
+	var vm = new Vue({
+	  data: {
+	    a: 1
+	  },
+	  created: function () {
+	    // `this` points to the vm instance
+	    console.log('a is: ' + this.a)
+	  }
+	})
+		var app = new Vue({
+		  el: '#app',
+		  data: {
+		    message: 'Hello Vue!'
+		  }
+		})
+		var app2 = new Vue({
+		  el: '#app-2',
+		  data: {
+		    message: 'Cargaste esta pagina el...' + new Date()
+		  }
+		})
+		var app3 = new Vue({
+		  el: '#app-3',
+		  data: {
+		    seen: true
+		  }
+		})
+		var app4 = new Vue({
+		  el: '#app-4',
+		  data: {
+		    todos: [
+		      { text: 'Learn JavaScript' },
+		      { text: 'Learn Vue' },
+		      { text: 'Build something awesome' }
+		    ]
+		  }
+		})
+		var app5 = new Vue({
+		  el: '#app-5',
+		  data: {
+		    message: 'Hello Vue.js!'
+		  },
+		  methods: {
+		    reverseMessage: function () {
+		      this.message = this.message.split('').reverse().join('')
+		    }
+		  }
+		})
+		var app6 = new Vue({
+		  el: '#app-6',
+		  data: {
+		    message: 'texto asignado con Vue!'
+		  }
+		})
+		// Se crea un nuevo conponente llamado todo-item
+		Vue.component('todo-item', {
+			// Se le agrega una propiedad llamada todo (prop: es como el style, class, tittle)
+		  props: ['todo'],
+		  // Hace referencia a todo. text para poderlos imprimir como con un tipo arreglo esto es lo que realmente se va a imprimir 
+		  template: '<li>{{ todo.text }}</li>'
+		})
+		var app7 = new Vue({
+		  el: '#app-7',
+		  data: {
+		    groceryList: [
+		      { text: 'Vegetales' },
+		      { text: 'Queso' },
+		      { text: 'Cualquier cosa que los humanos coman' }
+		    ]
+		  }
+		})
+
+
+	</script>
+</body>
+</html>

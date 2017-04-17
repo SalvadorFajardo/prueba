@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div id="example">
+	 	<p>Original message: "{{ message }}"</p>
+	  	<p>Computed reversed message: "{{ reversedMessage }}"</p>
+		<p>{{ reverseMessageMet() }}</p>
+	</div>
+	<div id="demo">{{ fullName }}</div>
+	<br><br>
+
+
+	<div id="watch-example">
+	  <p>
+	    Haga un pregunta si/no:
+	    <input v-model="question">
+	  </p>
+	  <p>{{ answer }}</p>
+	  <img v-bind:src="url" width="200px">
+	</div>
+	
+	
+
+	<script src="https://unpkg.com/vue"></script>
+	<script>
+		var vm = new Vue({
+		  el: '#example',
+		  data: {
+		    message: 'Hello'
+		  },
+		  // las propiedades calculadas se almacenan en caché en función de sus dependencias.
+		  // Osea cada vez que cambie message esta tambien lo haria
+		  computed: {
+		    // a computed getter
+		    reversedMessage: function () {
+		      // `this` points to the vm instance
+		      return this.message.split('').reverse().join('')
+		    }
+		  },
+		  // LAs funciones cada vez que un re-render sucede.
+		  methods: {
+		  	reverseMessageMet: function () {
+					return this.message.split('').reverse().join('')
+				}
+		  }	
+		});
+		var vm2 = new Vue({
+		  el: '#demo',
+		  data: {
+		    firstName: 'Foo',
+		    lastName: 'Bar',
+		    fullName: 'Foo Bar'
+		  },
+		  watch: {
+		    firstName: function (val) {
+		      this.fullName = val + ' 	' + this.lastName
+		    },
+		    lastName: function (val) {
+		      this.fullName = this.firstName + ' ' + val
+		    }
+		  }
+		});
+	</script>
+
+	<!-- Ya que ya hay un rico ecosistema de bibliotecas ajax y colecciones de métodos de utilidad de uso general, Vue core  es capaz de permanecer pequeño al no reinventarlos. Esto también le da la libertad de usar sólo lo que está familiarizado. -->
+	<script src="https://unpkg.com/axios@0.12.0/dist/axios.min.js"></script>
+	<script src="https://unpkg.com/lodash@4.13.1/lodash.min.js"></script>
+	
+	<script>
+	var watchExampleVM = new Vue({
+	  el: '#watch-example',
+	  data: {
+	    question: '',
+	    answer: 'No puedo dar un respuesta hasta que haga una pregunta!',
+	    url: 'https://yesno.wtf/assets/no/14-cb78bf7104f848794808d61b9cd83eba.gif'
+	  },
+	  watch: {
+	    // Siempre que cambie la pregunta, esta función se ejecutará
+	    question: function (newQuestion) {
+	      this.answer = 'Esperando que deje de escribir...'
+	      this.getAnswer();
+	      console.log("Ejecuando watch");
+	    }
+	  },
+	  methods: {
+	    // _.debounce es una funcion proporcionada por lodash para limitar en un timepo especifico
+	    getAnswer: _.debounce(
+	      function () {
+	        if (this.question.indexOf('?') === -1) {
+	          this.answer = 'Las preguntas generalmente tienen un signo de interoogacion XD'
+	          return
+	        }
+	        this.answer = 'Pensando...'
+	        var vm = this
+	        axios.get('https://yesno.wtf/api')
+	          .then(function (response) {
+	          	console.log(response);
+	            vm.answer = _.capitalize(response.data.answer)
+	            vm.url = response.data.image
+	          })
+	          .catch(function (error) {
+	            vm.answer = 'Error! Could not reach the API. ' + error
+	          })
+	      },
+	      // This is the number of milliseconds we wait for the
+	      // user to stop typing.
+	      500
+	    )
+	  }
+	})
+	</script>
+</body>
+</html>
